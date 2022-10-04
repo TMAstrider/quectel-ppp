@@ -1,3 +1,5 @@
+10/4/22  I've try this, but EC 20 just didn't work. :(
+
 Pay attention: Donot modify the 3 files in Windows.
 
 Pay attention: It will make the 3 file become Dos format. 
@@ -20,44 +22,44 @@ exec command 'pppd call quectel-ppp'
 
 
 
-ע�ⲻҪ�� windows �±༭��Ŀ¼�µ��ļ��������ʹ����Щ�ļ���� dos ��ʽ.
+注意不要在 windows 下编辑该目录下的文件、否则会使得这些文件变成 dos 格式.
 
-windows �� dos ��ʽ��ָ�ļ���ÿ���� \r\n ��β���� linux ���ļ�Ĭ������ \n ��β�ġ�
+windows 的 dos 格式是指文件的每行以 \r\n 结尾，而 linux 的文件默认是以 \n 结尾的。
 
-pppd �� chat ���ܽ��� dos ��ʽ���ļ���
-���� dos2unix ���԰� dos ��ʽ���ļ�ת�� linux ��ʽ��
+pppd 和 chat 不能解析 dos 格式的文件。
+工具 dos2unix 可以把 dos 格式的文件转成 linux 格式。
 
 
 
-��2�ַ�������ppp����
+有2种方法启动ppp拨号
 
-��ʽ1�� ���� quectel-chat-connect quectel-chat-disconnect quectel-ppp �� /etc/ppp/peers Ŀ¼�¡�
+方式1： 拷贝 quectel-chat-connect quectel-chat-disconnect quectel-ppp 到 /etc/ppp/peers 目录下。
 
-���� quectel-ppp ���޸���Ĵ����豸����pppd ����ʹ�õ� username��password��
+并在 quectel-ppp 里修改你的串口设备名，pppd 拨号使用的 username，password。
 
-�� quectel-chat-connect ���޸���� APN��APN/username/password �Ǵ���������ṩ�������ȡ�ġ�
+在 quectel-chat-connect 里修改你的 APN。APN/username/password 是从你的网络提供商那里获取的。
 
-Ȼ��ʹ��������������� ppp ���ţ� �������� & ������ pppd ��̨����
+然后使用下面的命令启动 ppp 拨号， 命令最后的 & 可以让 pppd 后台运行
 
 pppd call quectel-ppp &
 
 
 
-��ʽ2��ʹ��quectel-pppd.sh ���ţ�������ʽ����:
+方式2：使用quectel-pppd.sh 拨号，命令形式如下:
 
-./quectel-pppd.sh �����豸��(����/dev/ttyUSB3) APN username password
-
-
-
-ip-up��pppd �ڻ�ȡ ip �� dns ֮�󣬻��Զ���������ű��ļ�������ϵͳ�� DNS
-
-Ƕ��ʽϵͳһ����Ҫ��������ļ��� /etc/ppp Ŀ¼�¡�
-��ȷ�����ļ������ϵͳ���п�ִ��Ȩ�ޡ�
+./quectel-pppd.sh 串口设备名(比如/dev/ttyUSB3) APN username password
 
 
 
-quectel-ppp-kill �����Ҷϲ��ŵģ�pppd���뱻�����ĹҶϣ�������ܻᵼ�����´�ppp����ʧ�ܡ�
+ip-up：pppd 在获取 ip 和 dns 之后，会自动调用这个脚本文件来设置系统的 DNS
 
-ʹ�����淽ʽ����������ű�
+嵌入式系统一般需要拷贝这个文件到 /etc/ppp 目录下。
+请确保该文件在你的系统里有可执行权限。
+
+
+
+quectel-ppp-kill 用来挂断拨号的，pppd必须被正常的挂断，否则可能会导致你下次ppp拨号失败。
+
+使用下面方式来调用这个脚本
 
 ./quectel-ppp-kill 
